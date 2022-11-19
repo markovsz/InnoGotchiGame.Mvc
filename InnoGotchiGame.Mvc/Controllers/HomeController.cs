@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,13 @@ namespace InnoGotchiGame.Mvc.Controllers
             _logger = logger;
         }
 
+        [HttpGet("/")]
         public IActionResult Index()
         {
-            return RedirectPermanent("/farms/overview");
+            if(HttpContext.User.Identity.IsAuthenticated)
+                return RedirectPermanent("/farms/overview");
+            else
+                return RedirectPermanent("/login");
         }
     }
 }
