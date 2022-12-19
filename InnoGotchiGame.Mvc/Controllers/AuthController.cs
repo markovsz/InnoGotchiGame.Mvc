@@ -22,5 +22,11 @@ namespace InnoGotchiGame.Mvc.Controllers
         {
             return View("~/Views/LogIn.cshtml");
         }
+
+        [HttpGet("reg")]
+        public IActionResult GetRegPage()
+        {
+            return View("~/Views/Reg.cshtml");
+        }
     }
 }
