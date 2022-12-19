@@ -1,1 +1,18 @@
 ﻿
+    <div class="container">
+        <div class="row">
+            <div class="container farms-overview-content">
+                @foreach (var pet in ViewBag.Pets)
+                {
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Name: @pet.Name</h5>
+                            <p class="card-text">Age: @pet.Age</p>
+                            <p class="card-text">Happiness days count: @pet.HappinessDaysCount</p>
+                            <a href="/pets/pet/@pet.Id/details" class="btn btn-primary">Show</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
