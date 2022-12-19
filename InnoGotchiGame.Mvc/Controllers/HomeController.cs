@@ -18,13 +18,13 @@ namespace InnoGotchiGame.Mvc.Controllers
             _logger = logger;
         }
 
-        [HttpGet("/")]
+        [HttpGet]
+        [Route("/")]
         public IActionResult Index()
         {
             if(HttpContext.User.Identity.IsAuthenticated)
                 return RedirectPermanent("/farms/overview");
-            else
-                return RedirectPermanent("/login");
+            return RedirectPermanent("/login");
         }
     }
 }
