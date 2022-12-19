@@ -1,1 +1,205 @@
-﻿
+﻿<script src="~/js/farm-details.js"></script>
+<link rel="stylesheet" href="~/css/farm-details.css">
+<div class="container">
+    <div class="row">
+        <div class="col-6 container farms-overview-content">
+            @if (@ViewBag.Farm != null)
+            {
+                <div class="card d-flex justify-content-between flex-wrap">
+                    <div class="card-body">
+                        <div class="d-flex flex-row justify-content-between">
+                            <h3 class="card-title pb-2">@ViewBag.Farm.Name</h3>
+                            <div>
+                                @if (ViewBag.CurrentUserId == ViewBag.Farm.UserInfo.UserId)
+                                {
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#invite-friend-modal">invite friend</button>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#farm-friends-list-modal">friends list</button>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#new-pet-modal">new pet</button>
+                                }
+                            </div>
+                        </div>
+                        <p class="card-text">AlivePetsCount: @ViewBag.Farm.AlivePetsCount</p>
+                        <p class="card-text">DeadPetsCount: @ViewBag.Farm.DeadPetsCount</p>
+                        <p class="card-text">AverageFeedingTime: @ViewBag.Farm.AverageFeedingTime</p>
+                        <p class="card-text">AverageThirstQuenchingTime: @ViewBag.Farm.AverageThirstQuenchingTime</p>
+                        <p class="card-text">AverageHappinessDaysCount: @ViewBag.Farm.AverageHappinessDaysCount</p>
+                        <p class="card-text">AveragePetsAge: @ViewBag.Farm.AveragePetsAge</p>
+                    </div>
+
+                    
+                </div>
+            }
+            <div class="list-group pre-scrollable">
+                @foreach (var pet in ViewBag.Farm.Pets)
+                {
+                    <div class="list-group-item list-group-item-action" aria-current="true">
+                        <div class="d-flex w-100 justify-content-between">
+                            <div>
+                                <a href="/pets/pet/@pet.Id/details"><h5 class="mb-1">@pet.Name</h5></a>
+                                <p class="mb-1">Age: @pet.Age</p>
+                                <p class="mb-1" id="hunger-lvl-property">Hunger level: @pet.HungerLevel</p>
+                                <p class="mb-1" id="thirst-lvl-property">Thirst level: @pet.ThirstLevel</p>
+                                <p class="mb-1">Happiness days count: @pet.HappinessDaysCount</p>
+                            </div>
+
+                            <div>
+                                <button class="btn btn-primary feeding-button" data-pet-id="@pet.Id">Feed</button>
+                                <button class="btn btn-primary give-a-drink-button" data-pet-id="@pet.Id">Give a drink</button>
+                            </div>
+                        </div>
+                        <small>And some small print.</small>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="farm-friends-list-modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content p-2">
+            <h5 class="d-flex justify-content-center m-2">Farm friends</h5>
+            <ul class="list-group">
+                @foreach (var friend in @ViewBag.Farm.FarmFriends)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <img src="https://mdbootstrap.com/img/new/avatars/8.jpg" alt="" style="width: 45px; height: 45px"
+                                 class="rounded-circle" />
+                            <div class="ms-3">
+                                <p class="fw-bold mb-1">@friend.FirstName @friend.LastName</p>
+                            </div>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="invite-friend-modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content p-2">
+            <h5 class="d-flex justify-content-center m-2">Invite friend</h5>
+            <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-sm">User Id</span>
+                <input type="text" class="form-control" id="invite-friend-modal-user-id" aria-label="" aria-describedby="inputGroup-sizing-sm">
+                <span class="disabled" id="invite-friend-modal-farm-id" data-farm-id="@ViewBag.Farm.Id"></span>
+            </div>
+            <button type="button" class="btn btn-secondary" id="invite-friend-modal-submit-button" data-bs-dismiss="modal">Submit</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-lg pet-creating-modal fade" id="new-pet-modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content p-2">
+            <h5 class="d-flex justify-content-center m-2">New pet</h5>
+            <span class="disabled" id="new-pet-modal-farm-id" data-farm-id="@ViewBag.Farm.Id"></span>
+            <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-sm">Name</span>
+                <input type="text" class="form-control" id="new-pet-modal-name" aria-label="" aria-describedby="inputGroup-sizing-sm">
+                <span class="disabled" id="invite-friend-modal-farm-id" data-farm-id="@ViewBag.Farm.Id"></span>
+            </div>
+            <div class="d-flex flex-row overflow-auto">
+                <div class="accordion" id="accordionPanelsStayOpenExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                                Bodies
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                            <div class="accordion-body">
+
+                                <div class="list-group">
+                                    @foreach (string bodyPic in @ViewBag.BodyPics)
+                                    {
+                                        <a class="list-group-item list-group-item-action pet-body-part pet-body" id="pet-@bodyPic.Split('.')[0]" data-pic-name="@bodyPic" data-dest-pic-id="#pet-body-pic">
+                                            <img class="img-choosable" src="https://localhost:44336/images/@bodyPic" />
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                                Eyes
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
+                            <div class="accordion-body">
+                                <div class="list-group">
+                                    @foreach (string eyesPic in @ViewBag.EyesPics)
+                                    {
+                                        <a class="list-group-item list-group-item-action pet-body-part pet-eyes" id="pet-@eyesPic.Split('.')[0]" data-pic-name="@eyesPic" data-dest-pic-id="#pet-eyes-pic">
+                                            <img class="img-choosable" src="https://localhost:44336/images/@eyesPic" />
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+                                Mouths
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingThree">
+                            <div class="accordion-body">
+                                <div class="list-group">
+                                    @foreach (string mouthPic in @ViewBag.MouthPics)
+                                    {
+                                        <a class="list-group-item list-group-item-action pet-body-part pet-mouth" id="pet-@mouthPic.Split('.')[0]" data-pic-name="@mouthPic" data-dest-pic-id="#pet-mouth-pic">
+                                            <img class="img-choosable" src="https://localhost:44336/images/@mouthPic" />
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFour" aria-expanded="false" aria-controls="panelsStayOpen-collapseFour">
+                                Noses
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingThree">
+                            <div class="accordion-body">
+                                <div class="list-group">
+                                    @foreach (string nosePic in @ViewBag.NosePics)
+                                    {
+                                        <a class="list-group-item list-group-item-action pet-body-part pet-nose" id="pet-@nosePic.Split('.')[0]" data-pic-name="@nosePic" data-dest-pic-id="#pet-nose-pic">
+                                            <img class="img-choosable" src="https://localhost:44336/images/@nosePic" />
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <input type="range" min="0.1" max="5" step="0.1" id="pet-body-part-scale" />
+                    <div class="container pet-pic-container" id="pet-constructor">
+                        <img class="img-absolute draggable-pic" id="pet-body-pic" src="" data-body-part-id="" />
+                        <img class="img-absolute draggable-pic" id="pet-eyes-pic" src="" data-body-part-id="" />
+                        <img class="img-absolute draggable-pic" id="pet-mouth-pic" src="" data-body-part-id="" />
+                        <img class="img-absolute draggable-pic" id="pet-nose-pic" src="" data-body-part-id="" />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="row  justify-content-between p-1">
+                    <button type="button" style="margin-left: -1px;" data-bs-dismiss="modal" class="btn btn-secondary col-6">Close</button>
+                    <button type="button" style="margin-right: -1px;" id="new-pet-modal-submit-button" class="btn btn-secondary col-6">Submit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
