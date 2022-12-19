@@ -1,3 +1,4 @@
+using InnoGotchiGame.Mvc.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -23,6 +24,7 @@ namespace InnoGotchiGame.Mvc
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.ConfigureJwt(Configuration);
             services.AddHttpClient();
             services.AddControllersWithViews();
         }
@@ -45,6 +47,9 @@ namespace InnoGotchiGame.Mvc
 
             app.UseRouting();
 
+            app.UseMiddleware<CookieAuthorizationMiddleware>();
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
