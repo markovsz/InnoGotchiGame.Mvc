@@ -3,7 +3,11 @@
     <div class="row">
         <div class="col-md-3 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                <img class="rounded-circle mt-0" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+                <img class="rounded-circle mt-0" width="150px" src="https://localhost:44336/images/@ViewBag.UserInfo.PictureSrc">
+                <div class="">
+                    <input name="myFile" id="avatar-choosing-button" type="file">
+                    <button class="btn btn-secondary" id="avatar-upload-button">Upload</button>
+                </div>
                 <button class="btn btn-secondary m-2" data-bs-toggle="modal" data-bs-target="#password-modal">Change password</button>
             </div>
         </div>
