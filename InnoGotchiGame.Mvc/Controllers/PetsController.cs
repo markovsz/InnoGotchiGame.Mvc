@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace InnoGotchiGame.Mvc.Controllers
@@ -41,6 +42,15 @@ namespace InnoGotchiGame.Mvc.Controllers
             var petsJson = await petsResponseMessage.Content.ReadAsStringAsync();
             var pet = JsonConvert.DeserializeObject<PetReadingDto>(petsJson);
             ViewBag.Pet = pet;
+
+            var userIdStr = HttpContext.User.Claims
+                                         .Where(e => e.Type.Equals(ClaimTypes.NameIdentifier))
+                                         .FirstOrDefault().Value;
+
+            Guid userId;
+            Guid.TryParse(userIdStr, out userId);
+
+            ViewBag.CurrentUserId = userId;
             return View("~/Views/InnogotchiDetails.cshtml");
         }
 

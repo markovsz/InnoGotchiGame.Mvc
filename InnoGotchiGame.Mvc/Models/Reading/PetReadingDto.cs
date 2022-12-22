@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Application.Services.DataTransferObjects.Reading
 {
@@ -27,5 +28,8 @@ namespace Application.Services.DataTransferObjects.Reading
         public float NosePictureX { get; set; }
         public float NosePictureY { get; set; }
         public float NosePictureScale { get; set; }
+
+        public Guid UserId { get; set; }
+        public IEnumerable<Guid> Friends { get; set; }
     }
 }

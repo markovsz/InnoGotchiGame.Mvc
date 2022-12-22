@@ -12,8 +12,15 @@
                     <p class="card-text">Happiness days count: @ViewBag.Pet.HappinessDaysCount</p>
                     <p class="card-text">Is alive: @ViewBag.Pet.IsAlive</p>
                 </div>
-                <button class="btn btn-primary feeding-button m-1" data-pet-id="@ViewBag.Pet.Id">Feed</button>
-                <button class="btn btn-primary give-a-drink-button mx-1 mb-1" data-pet-id="@ViewBag.Pet.Id">Give a drink</button>
+                @foreach (var friendId in @ViewBag.Pet.Friends)
+                {
+                    @if (friendId == @ViewBag.CurrentUserId || @ViewBag.Pet.UserId == @ViewBag.CurrentUserId)
+                    {
+                        <button class="btn btn-primary feeding-button m-1" data-pet-id="@ViewBag.Pet.Id">Feed</button>
+                        <button class="btn btn-primary give-a-drink-button mx-1 mb-1" data-pet-id="@ViewBag.Pet.Id">Give a drink</button>
+                        break;
+                    }
+                }
             </div>
         </div>
         <div class="col-8 pet-pic-container">
