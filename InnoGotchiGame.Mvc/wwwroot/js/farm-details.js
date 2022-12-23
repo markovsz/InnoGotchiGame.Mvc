@@ -94,6 +94,7 @@ $(document).ready(function () {
         });
     });
     $('#new-pet-modal-submit-button').click(function () {
+        let normalPicEdgeSize = 134.0;
         let farmId = $('#new-pet-modal-farm-id').data('farmId');
         let jwtToken = localStorage.getItem('jwtToken');
         let petName = $('#new-pet-modal-name').val();
@@ -128,19 +129,19 @@ $(document).ready(function () {
                 bodyPicName: bodyPicName,
                 bodyPictureX: bodyPic.position().left,
                 bodyPictureY: bodyPic.position().top,
-                bodyPictureScale: bodyPic.width() / bodyPicWidth,
+                bodyPictureScale: bodyPic.width() / normalPicEdgeSize,
                 eyesPicName: eyesPicName,
                 eyesPictureX: eyesPic.position().left,
                 eyesPictureY: eyesPic.position().top,
-                eyesPictureScale: eyesPic.width() / eyesPicWidth,
+                eyesPictureScale: eyesPic.width() / normalPicEdgeSize,
                 mouthPicName: mouthPicName,
                 mouthPictureX: mouthPic.position().left,
                 mouthPictureY: mouthPic.position().top,
-                mouthPictureScale: mouthPic.width() / mouthPicWidth,
+                mouthPictureScale: mouthPic.width() / normalPicEdgeSize,
                 nosePicName: nosePicName,
                 nosePictureX: nosePic.position().left,
                 nosePictureY: nosePic.position().top,
-                nosePictureScale: nosePic.width() / nosePicWidth
+                nosePictureScale: nosePic.width() / normalPicEdgeSize
             }),
             dataType: "json",
             success: function (response) {
