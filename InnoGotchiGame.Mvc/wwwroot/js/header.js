@@ -18,7 +18,7 @@
         success: function (response) {
             $('#user-name-span')[0].textContent = response.firstName;
             $('#user-surname-span')[0].textContent = response.lastName;
-            $('#avatar-pic')[0].attr('src', 'https://localhost:44336/images/'  + response.pictureSrc);
+            $('#avatar-pic').attr('src', 'https://localhost:44336/images/'  + response.pictureSrc);
 
             //alert(response.status);
         },
