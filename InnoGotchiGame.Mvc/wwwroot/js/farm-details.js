@@ -93,6 +93,29 @@ $(document).ready(function () {
             }
         });
     });
+    $('#delete-friend-button').click(function () {
+        let farmFriendId = $('#delete-friend-button').data('farm-friend-id');
+        let jwtToken = localStorage.getItem('jwtToken');
+
+        $.ajax({
+            url: `https://localhost:44336/api/FarmFriends/farm-friend/${farmFriendId}`,
+            type: "DELETE",
+            headers: {
+                'Content-Encoding': 'gzip',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            crossDomain: true,
+            dataType: "json",
+            success: function (response) {
+                alert(resp.status);
+            },
+            error: function (xhr, status) {
+                let resp = JSON.parse(xhr.responseText);
+                alert(resp.Message);
+            }
+        });
+    });
     $('#new-pet-modal-submit-button').click(function () {
         let normalPicEdgeSize = 134.0;
         let farmId = $('#new-pet-modal-farm-id').data('farmId');
