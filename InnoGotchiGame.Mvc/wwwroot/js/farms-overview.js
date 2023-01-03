@@ -15,14 +15,11 @@
             data: JSON.stringify({ name: farmName }),
             dataType: "json",
             success: function (response) {
-                var resp = JSON.parse(response)
-                if (data.content == 'full') {
-                    this.classList.add('disabled');
-                }
-                alert(resp.status);
+                alert("farm successfully created");
             },
             error: function (xhr, status) {
-                alert("error");
+                var resp = JSON.parse(xhr.responseText);
+                alert(resp.Message);
             }
         });
     });

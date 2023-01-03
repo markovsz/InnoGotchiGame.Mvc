@@ -21,7 +21,8 @@
                 alert();
             },
             error: function (xhr, status) {
-                alert("error");
+                var resp = JSON.parse(xhr.responseText);
+                alert(resp.Message);
             }
         });
     });
@@ -42,10 +43,11 @@
             data: JSON.stringify({ firstName: firstName, lastName: lastName }),
             dataType: "json",
             success: function (response) {
-                alert(resp.status);
+                alert("profile changes successfully saved");
             },
             error: function (xhr, status) {
-                alert("error");
+                var resp = JSON.parse(xhr.responseText);
+                alert(resp.Message);
             }
         });
     });
@@ -86,13 +88,11 @@
             data: JSON.stringify(fileBase64),
             dataType: "json",
             success: function (response) {
-                alert(resp.status);
+                alert("avatar successfully uploaded");
             },
             error: function (xhr, status, p3, p4) {
-                var err = "Error " + " " + status + " " + p3 + " " + p4;
-                if (xhr.responseText && xhr.responseText[0] == "{")
-                    err = JSON.parse(xhr.responseText).Message;
-                console.log(err);
+                var resp = JSON.parse(xhr.responseText);
+                alert(resp.Message);
             }
         });
     }
