@@ -32,22 +32,64 @@
             <div class="list-group pre-scrollable">
                 @foreach (var pet in ViewBag.Farm.Pets)
                 {
-                    <div class="list-group-item list-group-item-action" aria-current="true">
-                        <div class="d-flex w-100 justify-content-between">
-                            <div>
-                                <a href="/pets/pet/@pet.Id/details"><h5 class="mb-1">@pet.Name</h5></a>
-                                <p class="mb-1">Age: @pet.Age</p>
-                                <p class="mb-1" id="hunger-lvl-property">Hunger level: @pet.HungerLevel</p>
-                                <p class="mb-1" id="thirst-lvl-property">Thirst level: @pet.ThirstLevel</p>
-                                <p class="mb-1">Happiness days count: @pet.HappinessDaysCount</p>
+                <div class="list-group-item list-group-item-action" aria-current="true" data-unique-pet-card-id="@pet.Id">
+                    <div class="d-flex w-100 justify-content-between">
+                        <div>
+                            <a href="/pets/pet/@pet.Id/details"><h5 class="mb-1">@pet.Name</h5></a>
+                            <p class="mb-1">Age: @pet.Age</p>
+                            <div class="d-flex flex-row">
+                                @{
+                                    switch (pet.HungerLevel)
+                                    {
+                                        case "full":
+                                            <p class="mb-1 hunger-lvl-property text-success">Hunger level: @pet.HungerLevel</p>
+                                            break;
+                                        case "normal":
+                                            <p class="mb-1 hunger-lvl-property text-warning">Hunger level: @pet.HungerLevel</p>
+                                            break;
+                                        case "hunger":
+                                            <p class="mb-1 hunger-lvl-property text-danger">Hunger level: @pet.HungerLevel</p>
+                                            break;
+                                        case "dead":
+                                            <p class="mb-1 hunger-lvl-property text-secondary">Hunger level: @pet.HungerLevel</p>
+                                            break;
+                                    }
+                                }
+                                <p class="mx-1">@pet.HungerInProcents%</p>
                             </div>
+                            <div class="d-flex flex-row">
+                                @{
+                                    switch (pet.ThirstLevel)
+                                    {
+                                        case "full":
+                                            <p class="mb-1 thirst-lvl-property text-success">Thirst level: @pet.ThirstLevel</p>
+                                            break;
+                                        case "normal":
+                                            <p class="mb-1 thirst-lvl-property text-warning">Thirst level: @pet.ThirstLevel</p>
+                                            break;
+                                        case "thirsty":
+                                            <p class="mb-1 thirst-lvl-property text-danger">Thirst level: @pet.ThirstLevel</p>
+                                            break;
+                                        case "dead":
+                                            <p class="mb-1 thirst-lvl-property text-secondary">Thirst level: @pet.ThirstLevel</p>
+                                            break;
+                                    }
+                                }
+                                <p class="mx-1">@pet.ThirstInProcents%</p>
+                            </div>
+                            <p class="mb-1">Happiness days count: @pet.HappinessDaysCount</p>
+                        </div>
 
-                            <div>
-                                <button class="btn btn-primary feeding-button" data-pet-id="@pet.Id">Feed</button>
-                                <button class="btn btn-primary give-a-drink-button" data-pet-id="@pet.Id">Give a drink</button>
-                            </div>
+                        <div>
+                            <button class="btn btn-primary feeding-button" data-pet-id="@pet.Id">Feed</button>
+                            <button class="btn btn-primary give-a-drink-button" data-pet-id="@pet.Id">Give a drink</button>
                         </div>
                     </div>
+                    <div class="d-flex flex-column">
+                        <small>hunger in procents per real hour: @pet.HungerInProcentsPerRealHour%</small>
+                        <small>thirst in procents per real hour: @pet.ThirstInProcentsPerRealHour%</small>
+                    </div>
+                </div>
                 }
             </div>
         </div>
@@ -116,7 +158,7 @@
                                     @foreach (string bodyPic in @ViewBag.BodyPics)
                                     {
                                         <a class="list-group-item list-group-item-action pet-body-part pet-body" id="pet-@bodyPic.Split('.')[0]" data-pic-name="@bodyPic" data-dest-pic-id="#pet-body-pic">
-                                            <img class="img-choosable" src="https://localhost:44336/images/@bodyPic" />
+                                            <img class="img-choosable" src="https://localhost:44336/images/body-parts/@bodyPic" />
                                         </a>
                                     }
                                 </div>
@@ -135,7 +177,7 @@
                                     @foreach (string eyesPic in @ViewBag.EyesPics)
                                     {
                                         <a class="list-group-item list-group-item-action pet-body-part pet-eyes" id="pet-@eyesPic.Split('.')[0]" data-pic-name="@eyesPic" data-dest-pic-id="#pet-eyes-pic">
-                                            <img class="img-choosable" src="https://localhost:44336/images/@eyesPic" />
+                                            <img class="img-choosable" src="https://localhost:44336/images/body-parts/@eyesPic" />
                                         </a>
                                     }
                                 </div>
@@ -154,7 +196,7 @@
                                     @foreach (string mouthPic in @ViewBag.MouthPics)
                                     {
                                         <a class="list-group-item list-group-item-action pet-body-part pet-mouth" id="pet-@mouthPic.Split('.')[0]" data-pic-name="@mouthPic" data-dest-pic-id="#pet-mouth-pic">
-                                            <img class="img-choosable" src="https://localhost:44336/images/@mouthPic" />
+                                            <img class="img-choosable" src="https://localhost:44336/images/body-parts/@mouthPic" />
                                         </a>
                                     }
                                 </div>
@@ -173,7 +215,7 @@
                                     @foreach (string nosePic in @ViewBag.NosePics)
                                     {
                                         <a class="list-group-item list-group-item-action pet-body-part pet-nose" id="pet-@nosePic.Split('.')[0]" data-pic-name="@nosePic" data-dest-pic-id="#pet-nose-pic">
-                                            <img class="img-choosable" src="https://localhost:44336/images/@nosePic" />
+                                            <img class="img-choosable" src="https://localhost:44336/images/body-parts/@nosePic" />
                                         </a>
                                     }
                                 </div>
@@ -183,7 +225,11 @@
                 </div>
 
                 <div>
-                    <input type="range" min="0.1" max="5" step="0.1" id="pet-body-part-scale" />
+                    <div class="d-flex flex-row">
+                        <p class="mx-1">scale: </p>
+                        <input type="range" min="0.1" max="5" step="0.1" id="pet-body-part-scale" />
+                        <span id="pet-body-part-scale-num" class="mx-1">1</span>
+                    </div>
                     <div class="container pet-pic-container" id="pet-constructor">
                         <img class="img-absolute draggable-pic" id="pet-body-pic" src="" data-body-part-id="" />
                         <img class="img-absolute draggable-pic" id="pet-eyes-pic" src="" data-body-part-id="" />

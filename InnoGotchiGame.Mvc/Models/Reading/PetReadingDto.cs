@@ -29,6 +29,11 @@ namespace Application.Services.DataTransferObjects.Reading
         public float NosePictureY { get; set; }
         public float NosePictureScale { get; set; }
 
+        public float HungerInProcents { get; set; }
+        public float ThirstInProcents { get; set; }
+        public float HungerInProcentsPerRealHour { get; set; }
+        public float ThirstInProcentsPerRealHour { get; set; }
+
         public Guid UserId { get; set; }
         public IEnumerable<Guid> Friends { get; set; }
     }
