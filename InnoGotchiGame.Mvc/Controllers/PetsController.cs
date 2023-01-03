@@ -94,6 +94,7 @@ namespace InnoGotchiGame.Mvc.Controllers
             var prevPageParametersDictionary = JsonConvert.DeserializeObject<IDictionary<string, string>>(prevPageParametersJson);
             var prevPageParametersList = prevPageParametersDictionary.Select(x => HttpUtility.UrlEncode(x.Key) + "=" + HttpUtility.UrlEncode(x.Value));
             var prevPageParametersStr = string.Join("&", prevPageParametersList);
+            if (isPrevPageAvailable) ++parameters.PageNumber;
 
             bool isNextPageAvailable = true;
             if (parameters.PageNumber < pagesCount) ++parameters.PageNumber;
@@ -102,6 +103,7 @@ namespace InnoGotchiGame.Mvc.Controllers
             var nextPageParametersDictionary = JsonConvert.DeserializeObject<IDictionary<string, string>>(nextPageParametersJson);
             var nextPageParametersList = nextPageParametersDictionary.Select(x => HttpUtility.UrlEncode(x.Key) + "=" + HttpUtility.UrlEncode(x.Value));
             var nextPageParametersStr = string.Join("&", nextPageParametersList);
+            if (isNextPageAvailable) --parameters.PageNumber;
 
             ViewBag.PrevPageParameters = prevPageParametersStr;
             ViewBag.IsPrevPageAvailable = isPrevPageAvailable;

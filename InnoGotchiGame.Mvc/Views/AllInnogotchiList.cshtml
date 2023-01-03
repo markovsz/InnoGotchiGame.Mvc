@@ -14,12 +14,12 @@
             }
         </div>
         <nav>
-            <ul class="pagination justify-content-center">
-                <li class="page-item @(@ViewBag.IsPrevPageAvailable == false ? "disabled" : "")">
+            <ul class="pagination justify-content-center m-3">
+                <li class="page-item @(ViewBag.IsPrevPageAvailable == false ? "disabled" : "")">
                     <a class="page-link" href="/pets/list?@ViewBag.PrevPageParameters" aria-disabled="true">Previous</a>
                 </li>
-                <li class="page-item">@ViewBag.CurrentPage</li>
-                <li class="page-item @(@ViewBag.IsPrevPageAvailable == false ? "disabled" : "")">
+                <li class="page-item page-link">@ViewBag.CurrentPage</li>
+                <li class="page-item @(ViewBag.IsNextPageAvailable == false ? "disabled" : "")">
                     <a class="page-link" href="/pets/list?@ViewBag.NextPageParameters">Next</a>
                 </li>
             </ul>
