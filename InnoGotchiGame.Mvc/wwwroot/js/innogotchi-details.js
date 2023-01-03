@@ -14,7 +14,7 @@
             dataType: "json",
             success: function (response) {
                 var resp = response.content;
-                $('hunger-lvl-property').value = resp;
+                $('#hunger-lvl-property').value = resp;
                 alert(resp);
             },
             error: function (xhr, status) {
@@ -38,7 +38,7 @@
             dataType: "json",
             success: function (response) {
                 let resp = response.content;
-                $('thirst-lvl-property').value = resp;
+                $('#thirst-lvl-property').value = resp;
                 alert(resp);
             },
             error: function (xhr, status) {

@@ -30,12 +30,11 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 var resp = response.content;
-                $('#hunger-lvl-property').val(resp);
+                $('.hunger-lvl-property').val(resp);
                 alert(resp);
             },
             error: function (xhr, status) {
                 let resp = JSON.parse(xhr.responseText);
-                $('[data-toggle="tooltip"]').tooltip({ trigger: 'click' });
                 alert(resp.Message);
             }
         });
@@ -55,7 +54,8 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 let resp = response.content;
-                $('#thirst-lvl-property').val(resp);
+                $('.thirst-lvl-property').val(resp);
+                $(`*[data-unique-pet-card-id="${petId}"]`)
                 alert(resp);
             },
             error: function (xhr, status) {
@@ -81,11 +81,7 @@ $(document).ready(function () {
             data: JSON.stringify({ farmId: farmId, userId: userId }),
             dataType: "json",
             success: function (response) {
-                let resp = JSON.parse(response)
-                if (data.content == 'full') {
-                    this.classList.add('disabled');
-                }
-                alert(resp.status);
+                alert("friend successfully invited");
             },
             error: function (xhr, status) {
                 let resp = JSON.parse(xhr.responseText);
@@ -168,19 +164,16 @@ $(document).ready(function () {
             }),
             dataType: "json",
             success: function (response) {
-                var resp = JSON.parse(response)
-                if (data.content == 'full') {
-                    this.classList.add('disabled');
-                }
-                alert(resp.status);
+                alert("pet successfully created");
             },
             error: function (xhr, status) {
-                alert("error");
+                var resp = JSON.parse(xhr.responseText);
+                alert(resp.Message);
             }
         });
     });
 
-    bodyPartPictureSizes = new Map();
+    let bodyPartPictureSizes = new Map();
 
     let selectedBodyPicId = null;
     let selectedBodyPicScale = null;
@@ -195,13 +188,14 @@ $(document).ready(function () {
         let scale = this.value;
         pic.width(bodyPartPictureSizes.get(`${selectedBodyPartPicId}`).width * scale);
         pic.height(bodyPartPictureSizes.get(`${selectedBodyPartPicId}`).height * scale);
+        $('#pet-body-part-scale-num').text(scale);
     });
     $('.pet-body-part').click(function () {
         let picName = this.dataset.picName;
         let destPicId = this.dataset.destPicId;
 
         let destPic = $(`${destPicId}`);
-        destPic.attr("src", `https://localhost:44336/images/${picName}`);
+        destPic.attr("src", `https://localhost:44336/images/body-parts/${picName}`);
         destPic.draggable();
 
         destPic[0].dataset.bodyPartId = `${this.id}`
@@ -224,5 +218,7 @@ $(document).ready(function () {
     $('.draggable-pic').mousedown(function () {
         selectedBodyPartPicId = this.dataset.bodyPartId;
         selectedDraggablePicId = this.id;
+        let scale = $(`#${selectedDraggablePicId}`).width() / bodyPartPictureSizes.get(`${selectedBodyPartPicId}`).width;
+        $('#pet-body-part-scale-num').text(scale);
     });
 });
