@@ -2,7 +2,7 @@
 {
     public class PetParameters : PaginationParameters
     {
-        public int Age { get; set; }
+        public int? Age { get; set; }
         public float? MinHungerLevel { get; set; }
         public float? MaxHungerLevel { get; set; }
         public float? MinThirstLevel { get; set; }
