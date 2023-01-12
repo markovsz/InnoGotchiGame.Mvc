@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Application.Services.DataTransferObjects.Reading //TODO: replace namespace to a local
+namespace InnoGotchiGame.Mvc.Models.Reading
 {
     public class UserReadingDto
     {

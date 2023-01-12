@@ -1,7 +1,4 @@
-﻿using Application.Services.DataTransferObjects.Reading;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using InnoGotchiGame.Mvc.Models.Reading;
 using System.Threading.Tasks;
 
 namespace InnoGotchiGame.Mvc.Services.Interfaces

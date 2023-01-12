@@ -1,7 +1,6 @@
-﻿using InnoGotchiGame.Mvc.Models.Reading;
-using System;
+﻿using System;
 
-namespace Application.Services.DataTransferObjects.Reading
+namespace InnoGotchiGame.Mvc.Models.Reading
 {
     public class FarmMinReadingDto
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Application.Services.DataTransferObjects.Reading
+namespace InnoGotchiGame.Mvc.Models.Reading
 {
     public class PetReadingDto
     {

@@ -1,4 +1,4 @@
-﻿using Application.Services.DataTransferObjects.Reading;
+﻿using InnoGotchiGame.Mvc.Models.Reading;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
