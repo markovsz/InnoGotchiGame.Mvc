@@ -1,3 +1,4 @@
+using InnoGotchiGame.Mvc.Filters;
 using InnoGotchiGame.Mvc.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,7 +29,7 @@ namespace InnoGotchiGame.Mvc
             services.AddHttpClient(Configuration.GetSection("HttpClientName").Value, 
                 c => c.BaseAddress = new Uri(Configuration.GetSection("BackendDomain").Value));
             services.ConfigureServices();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(opt => opt.Filters.Add(typeof(ExceptionFilter)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
