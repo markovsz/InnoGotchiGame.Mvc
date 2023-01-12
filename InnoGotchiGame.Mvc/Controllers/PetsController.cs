@@ -1,5 +1,4 @@
-﻿using Application.Services.DataTransferObjects.Reading;
-using Domain.Interfaces.RequestParameters;
+﻿using InnoGotchiGame.Mvc.Models.RequestParameters;
 using InnoGotchiGame.Mvc.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;

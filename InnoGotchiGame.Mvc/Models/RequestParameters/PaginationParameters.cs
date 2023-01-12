@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Interfaces.RequestParameters
+namespace InnoGotchiGame.Mvc.Models.RequestParameters
 {
     public abstract class PaginationParameters
     {

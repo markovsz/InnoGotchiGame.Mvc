@@ -1,5 +1,4 @@
-﻿using Application.Services.DataTransferObjects.Reading;
-using InnoGotchiGame.Mvc.Models.Reading;
+﻿using InnoGotchiGame.Mvc.Models.Reading;
 using InnoGotchiGame.Mvc.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Application.Services.DataTransferObjects.Reading
+namespace InnoGotchiGame.Mvc.Models.Reading
 {
     public class FarmFriendReadingDto
     {

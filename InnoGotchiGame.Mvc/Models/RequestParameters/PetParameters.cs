@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Domain.Interfaces.RequestParameters
+namespace InnoGotchiGame.Mvc.Models.RequestParameters
 {
     public class PetParameters : PaginationParameters, ICloneable
     {

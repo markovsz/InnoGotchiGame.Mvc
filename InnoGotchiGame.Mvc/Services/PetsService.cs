@@ -1,5 +1,5 @@
-﻿using Application.Services.DataTransferObjects.Reading;
-using Domain.Interfaces.RequestParameters;
+﻿using InnoGotchiGame.Mvc.Models.Reading;
+using InnoGotchiGame.Mvc.Models.RequestParameters;
 using InnoGotchiGame.Mvc.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Net.Http.Headers;
