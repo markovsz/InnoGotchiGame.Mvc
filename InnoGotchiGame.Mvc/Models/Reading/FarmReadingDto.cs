@@ -1,5 +1,4 @@
-﻿using InnoGotchiGame.Mvc.Models.Reading;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace InnoGotchiGame.Mvc.Models.Reading

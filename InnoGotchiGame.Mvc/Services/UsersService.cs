@@ -3,7 +3,6 @@ using InnoGotchiGame.Mvc.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
-using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 

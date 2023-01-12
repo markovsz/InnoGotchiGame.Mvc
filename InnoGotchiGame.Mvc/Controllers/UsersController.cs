@@ -1,8 +1,5 @@
 ﻿using InnoGotchiGame.Mvc.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Net.Http.Headers;
-using Newtonsoft.Json;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace InnoGotchiGame.Mvc.Controllers
