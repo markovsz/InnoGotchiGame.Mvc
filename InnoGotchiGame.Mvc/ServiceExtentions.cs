@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using InnoGotchiGame.Mvc.Services;
+using InnoGotchiGame.Mvc.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -30,6 +32,13 @@ namespace InnoGotchiGame.Mvc
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
                 };
             });
+        }
+
+        public static void ConfigureServices(this IServiceCollection services)
+        {
+            services.AddScoped<IFarmsService, FarmsService>();
+            services.AddScoped<IPetsService, PetsService>();
+            services.AddScoped<IUsersService, UsersService>();
         }
     }
 }

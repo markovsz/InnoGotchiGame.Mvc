@@ -10,11 +10,8 @@ namespace InnoGotchiGame.Mvc.Controllers
 {
     public class AuthController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
-
-        public AuthController(IHttpClientFactory httpClientFactory)
+        public AuthController()
         {
-            _httpClientFactory = httpClientFactory;
         }
 
         [HttpGet("login")]
