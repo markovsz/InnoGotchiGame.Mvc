@@ -1,4 +1,5 @@
 ﻿using Application.Services.DataTransferObjects.Reading;
+using InnoGotchiGame.Mvc.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
@@ -9,11 +10,11 @@ namespace InnoGotchiGame.Mvc.Controllers
 {
     public class UsersController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IUsersService _usersService;
 
-        public UsersController(IHttpClientFactory httpClientFactory)
+        public UsersController(IUsersService usersService)
         {
-            _httpClientFactory = httpClientFactory;
+            _usersService = usersService;
         }
 
         [HttpGet]
@@ -21,22 +22,7 @@ namespace InnoGotchiGame.Mvc.Controllers
         public async Task<IActionResult> MyProfile()
         {
             var jwtToken = Request.Cookies["jwtToken"];
-            var userInfoRequestMessage = new HttpRequestMessage(
-            HttpMethod.Get,
-            "https://localhost:44336/api/Users/my-profile")
-            {
-                Headers =
-                {
-                    { HeaderNames.Accept, "application/json" },
-                    { HeaderNames.Authorization, $"Bearer {jwtToken}" }
-                }
-            };
-
-
-            var httpClient = _httpClientFactory.CreateClient();
-            var userInfoResponseMessage = await httpClient.SendAsync(userInfoRequestMessage);
-            var userInfoJson = await userInfoResponseMessage.Content.ReadAsStringAsync();
-            var userInfo = JsonConvert.DeserializeObject<UserReadingDto>(userInfoJson);
+            var userInfo = await _usersService.GetMyProfile(jwtToken);
             ViewBag.UserInfo = userInfo;
             return View("~/Views/AccountDetails.cshtml");
         }

@@ -1,5 +1,6 @@
 ﻿using Application.Services.DataTransferObjects.Reading;
 using Domain.Interfaces.RequestParameters;
+using InnoGotchiGame.Mvc.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
@@ -15,11 +16,11 @@ namespace InnoGotchiGame.Mvc.Controllers
 {
     public class PetsController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IPetsService _petsService;
 
-        public PetsController(IHttpClientFactory httpClientFactory)
+        public PetsController(IPetsService petsService)
         {
-            _httpClientFactory = httpClientFactory;
+            _petsService = petsService;
         }
 
         [HttpGet]
@@ -27,22 +28,8 @@ namespace InnoGotchiGame.Mvc.Controllers
         public async Task<IActionResult> PetOverview(Guid petId)
         {
             var jwtToken = Request.Cookies["jwtToken"];
-            var petsRequestMessage = new HttpRequestMessage(
-            HttpMethod.Get,
-            $"https://localhost:44336/api/Pets/pet/{petId}")
-            {
-                Headers =
-                {
-                    { HeaderNames.Accept, "application/json" },
-                    { HeaderNames.Authorization, $"Bearer {jwtToken}" }
-                }
-            };
 
-
-            var httpClient = _httpClientFactory.CreateClient();
-            var petsResponseMessage = await httpClient.SendAsync(petsRequestMessage);
-            var petsJson = await petsResponseMessage.Content.ReadAsStringAsync();
-            var pet = JsonConvert.DeserializeObject<PetReadingDto>(petsJson);
+            var pet = await _petsService.GetPetOverview(petId, jwtToken);
             ViewBag.Pet = pet;
 
             var userIdStr = HttpContext.User.Claims
@@ -62,49 +49,9 @@ namespace InnoGotchiGame.Mvc.Controllers
         {
             var jwtToken = Request.Cookies["jwtToken"];
 
-            var parametersJson = JsonConvert.SerializeObject(parameters);
-            var parametersDictionary = JsonConvert.DeserializeObject<IDictionary<string, string>>(parametersJson);
-            var parametersList = parametersDictionary.Select(x => HttpUtility.UrlEncode(x.Key) + "=" + HttpUtility.UrlEncode(x.Value));
-            var parametersStr = string.Join("&", parametersList);
+            (var pets, var prevPageParametersStr, var isPrevPageAvailable, var nextPageParametersStr, var isNextPageAvailable) = await _petsService.GetPetsOverview(parameters, jwtToken);
 
-            var petsRequestMessage = new HttpRequestMessage(
-            HttpMethod.Get,
-            $"https://localhost:44336/api/Pets/all?{parametersStr}")
-            {
-                Headers =
-                {
-                    { HeaderNames.Accept, "application/json" },
-                    { HeaderNames.Authorization, $"Bearer {jwtToken}" }
-                }
-            };
-
-            var httpClient = _httpClientFactory.CreateClient();
-            var petsResponseMessage = await httpClient.SendAsync(petsRequestMessage);
-            var petsJson = await petsResponseMessage.Content.ReadAsStringAsync();
-            var pets = JsonConvert.DeserializeObject<IEnumerable<PetMinReadingDto>>(petsJson);
             ViewBag.Pets = pets;
-
-            var paginationHeaderValues = petsResponseMessage.Headers.GetValues("X-Pagination-Page-Count");
-            var pagesCount = Int32.Parse(paginationHeaderValues.FirstOrDefault());
-
-            bool isPrevPageAvailable = true;
-            if (parameters.PageNumber > 1) --parameters.PageNumber;
-            else isPrevPageAvailable = false;
-            var prevPageParametersJson = JsonConvert.SerializeObject(parameters);
-            var prevPageParametersDictionary = JsonConvert.DeserializeObject<IDictionary<string, string>>(prevPageParametersJson);
-            var prevPageParametersList = prevPageParametersDictionary.Select(x => HttpUtility.UrlEncode(x.Key) + "=" + HttpUtility.UrlEncode(x.Value));
-            var prevPageParametersStr = string.Join("&", prevPageParametersList);
-            if (isPrevPageAvailable) ++parameters.PageNumber;
-
-            bool isNextPageAvailable = true;
-            if (parameters.PageNumber < pagesCount) ++parameters.PageNumber;
-            else isNextPageAvailable = false;
-            var nextPageParametersJson = JsonConvert.SerializeObject(parameters);
-            var nextPageParametersDictionary = JsonConvert.DeserializeObject<IDictionary<string, string>>(nextPageParametersJson);
-            var nextPageParametersList = nextPageParametersDictionary.Select(x => HttpUtility.UrlEncode(x.Key) + "=" + HttpUtility.UrlEncode(x.Value));
-            var nextPageParametersStr = string.Join("&", nextPageParametersList);
-            if (isNextPageAvailable) --parameters.PageNumber;
-
             ViewBag.PrevPageParameters = prevPageParametersStr;
             ViewBag.IsPrevPageAvailable = isPrevPageAvailable;
             ViewBag.CurrentPage = parameters.PageNumber;

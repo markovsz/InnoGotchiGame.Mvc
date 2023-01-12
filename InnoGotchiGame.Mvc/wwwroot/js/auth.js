@@ -1,19 +1,24 @@
 ﻿function submitLoginForm() {
-    let emailValue = document.getElementById('email-input').value;
-    let passwordValue = document.getElementById('password-input').value;
-    fetch('https://localhost:44336/api/Auth/sign-in', {
-        method: 'POST',
-        mode: 'cors',
+    let emailValue = $('#email-input').val();
+    let passwordValue = $('#password-input').val();
+    $.ajax({
+        url: `https://localhost:44336/api/Auth/sign-in`,
+        type: "POST",
         headers: {
-            'Accept': 'application/json',
+            'Content-Encoding': 'gzip',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email: emailValue, password: passwordValue })
-    })
-    .then(response => response.json())
-    .then((data) => {
-        document.cookie = `jwtToken=${data.jwtToken}; max-age=8000000; path=/`;
-        localStorage.setItem('jwtToken', data.jwtToken);
-        window.location.href = '/farms/overview';
+        crossDomain: true,
+        data: JSON.stringify({ email: emailValue, password: passwordValue }),
+        dataType: "json",
+        success: function (data) {
+            document.cookie = `jwtToken=${data.jwtToken}; max-age=8000000; path=/`;
+            localStorage.setItem('jwtToken', data.jwtToken);
+            window.location.href = '/farms/overview';
+        },
+        error: function (xhr, status) {
+            var resp = JSON.parse(xhr.responseText);
+            alert(resp.Message);
+        }
     });
 }

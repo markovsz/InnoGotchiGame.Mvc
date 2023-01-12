@@ -9,6 +9,5 @@ namespace Domain.Interfaces.RequestParameters
     public abstract class PaginationParameters
     {
         public int PageNumber { get; set; }
-        public const int PageSize = 15;
     }
 }
