@@ -1,6 +1,13 @@
-﻿<div class="container">
+﻿<script src="~/js/all-innogotchi-list.js"></script>
+<div class="container">
     <div class="row">
         <div class="container farms-overview-content">
+            <div class="d-flex flex-row">
+                <p>Order by: </p>
+                <button class="m-1 btn btn-secondary" id="order-by-age-button">Age</button>
+                <button class="m-1 btn btn-secondary" id="order-by-hunger-button">Hunger</button>
+                <button class="m-1 btn btn-secondary" id="order-by-thirst-button">Thirst</button>
+            </div>
             @foreach (var pet in ViewBag.Pets)
             {
                 <div class="card">
