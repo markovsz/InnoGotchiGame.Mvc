@@ -24,7 +24,7 @@ namespace InnoGotchiGame.Mvc.Services
             var rootAddress = _configuration.GetSection("BackendRootAddress").Value;
             var userInfoRequestMessage = new HttpRequestMessage(
             HttpMethod.Get,
-            "api/my-profile")
+            "api/Users/my-profile")
             {
                 Headers =
                 {

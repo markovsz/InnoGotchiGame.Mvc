@@ -9,6 +9,7 @@ namespace InnoGotchiGame.Mvc.Models.RequestParameters
         public float? MaxHungerLevel { get; set; }
         public float? MinThirstLevel { get; set; }
         public float? MaxThirstLevel { get; set; }
+        public string SortedBy { get; set; }
 
         public object Clone()
         {
@@ -18,6 +19,7 @@ namespace InnoGotchiGame.Mvc.Models.RequestParameters
                 MaxHungerLevel = MaxHungerLevel,
                 MinThirstLevel = MinThirstLevel,
                 MaxThirstLevel = MaxThirstLevel,
+                SortedBy = SortedBy,
                 PageNumber = PageNumber
             };
         }
