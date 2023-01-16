@@ -1,4 +1,5 @@
 ﻿using InnoGotchiGame.Mvc.Models.Reading;
+using InnoGotchiGame.Mvc.Models.ViewModels;
 using InnoGotchiGame.Mvc.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Net.Http.Headers;
@@ -23,11 +24,9 @@ namespace InnoGotchiGame.Mvc.Services
             _configuration = configuration;
         }
 
-        public async Task<(FarmMinReadingDto, IEnumerable<FarmMinReadingDto>)> GetFarmsOverview(string jwtToken)
+        public async Task<FarmsOverviewResponseModel> GetFarmsOverview(string jwtToken)
         {
-            FarmMinReadingDto myFarm = null;
-            IEnumerable<FarmMinReadingDto> friendFarms = null;
-
+            var farmsOverviewResponseModel = new FarmsOverviewResponseModel();
             var myFarmRequestMessage = new HttpRequestMessage(
             HttpMethod.Get,
             "api/Farms/my-farm")
@@ -46,10 +45,10 @@ namespace InnoGotchiGame.Mvc.Services
             if (myFarmResponseMessage.IsSuccessStatusCode)
             {
                 var myFarmJson = await myFarmResponseMessage.Content.ReadAsStringAsync();
-                myFarm = JsonConvert.DeserializeObject<FarmMinReadingDto>(myFarmJson);
+                farmsOverviewResponseModel.MyFarm = JsonConvert.DeserializeObject<FarmMinReadingDto>(myFarmJson);
             }
             else if (myFarmResponseMessage.StatusCode.Equals(HttpStatusCode.NotFound))
-                myFarm = null;
+                farmsOverviewResponseModel.MyFarm = null;
             else
                 throw new HttpResponseException(myFarmResponseMessage.StatusCode);
 
@@ -69,14 +68,16 @@ namespace InnoGotchiGame.Mvc.Services
             if (friendFarmsResponseMessage.IsSuccessStatusCode)
             {
                 var friendFarmsJson = await friendFarmsResponseMessage.Content.ReadAsStringAsync();
-                friendFarms = JsonConvert.DeserializeObject<IEnumerable<FarmMinReadingDto>>(friendFarmsJson);
+                farmsOverviewResponseModel.FriendFarms = JsonConvert.DeserializeObject<IEnumerable<FarmMinReadingDto>>(friendFarmsJson);
             }
 
-            return (myFarm, friendFarms);
+            return farmsOverviewResponseModel;
         }
 
-        public async Task<(FarmReadingDto, IEnumerable<string>, IEnumerable<string>, IEnumerable<string>, IEnumerable<string>)> GetFarmDetails(Guid farmId, string jwtToken)
+        public async Task<FarmDetailsResponseModel> GetFarmDetails(Guid farmId, string jwtToken)
         {
+            var farmDetailsResponseModel = new FarmDetailsResponseModel();
+
             var farmRequestMessage = new HttpRequestMessage(
             HttpMethod.Get,
             $"api/Farms/farm/{farmId}")
@@ -93,7 +94,7 @@ namespace InnoGotchiGame.Mvc.Services
             if (!farmResponseMessage.IsSuccessStatusCode)
                 throw new Exception(farmResponseMessage.StatusCode.ToString());
             var farmJson = await farmResponseMessage.Content.ReadAsStringAsync();
-            var farm = JsonConvert.DeserializeObject<FarmReadingDto>(farmJson);
+            farmDetailsResponseModel.Farm = JsonConvert.DeserializeObject<FarmReadingDto>(farmJson);
 
 
             var bodyPicsRequestMessage = new HttpRequestMessage(
@@ -110,7 +111,7 @@ namespace InnoGotchiGame.Mvc.Services
             if (!bodyPicsResponseMessage.IsSuccessStatusCode)
                 throw new Exception(bodyPicsResponseMessage.StatusCode.ToString());
             var bodyPicsJson = await bodyPicsResponseMessage.Content.ReadAsStringAsync();
-            var bodyPics = JsonConvert.DeserializeObject<IEnumerable<string>>(bodyPicsJson);
+            farmDetailsResponseModel.BodyPics = JsonConvert.DeserializeObject<IEnumerable<string>>(bodyPicsJson);
 
 
             var eyesPicsRequestMessage = new HttpRequestMessage(
@@ -127,7 +128,7 @@ namespace InnoGotchiGame.Mvc.Services
             if (!eyesPicsResponseMessage.IsSuccessStatusCode)
                 throw new Exception(eyesPicsResponseMessage.StatusCode.ToString());
             var eyesPicsJson = await eyesPicsResponseMessage.Content.ReadAsStringAsync();
-            var eyesPics = JsonConvert.DeserializeObject<IEnumerable<string>>(eyesPicsJson);
+            farmDetailsResponseModel.EyesPics = JsonConvert.DeserializeObject<IEnumerable<string>>(eyesPicsJson);
 
 
             var mouthPicsRequestMessage = new HttpRequestMessage(
@@ -144,7 +145,7 @@ namespace InnoGotchiGame.Mvc.Services
             if (!mouthPicsResponseMessage.IsSuccessStatusCode)
                 throw new Exception(mouthPicsResponseMessage.StatusCode.ToString());
             var mouthPicsJson = await mouthPicsResponseMessage.Content.ReadAsStringAsync();
-            var mouthPics = JsonConvert.DeserializeObject<IEnumerable<string>>(mouthPicsJson);
+            farmDetailsResponseModel.MouthPics = JsonConvert.DeserializeObject<IEnumerable<string>>(mouthPicsJson);
 
 
             var nosePicsRequestMessage = new HttpRequestMessage(
@@ -161,9 +162,9 @@ namespace InnoGotchiGame.Mvc.Services
             if (!nosePicsResponseMessage.IsSuccessStatusCode)
                 throw new Exception(nosePicsResponseMessage.StatusCode.ToString());
             var nosePicsJson = await nosePicsResponseMessage.Content.ReadAsStringAsync();
-            var nosePics = JsonConvert.DeserializeObject<IEnumerable<string>>(nosePicsJson);
+            farmDetailsResponseModel.NosePics = JsonConvert.DeserializeObject<IEnumerable<string>>(nosePicsJson);
 
-            return (farm, bodyPics, eyesPics, mouthPics, nosePics);
+            return farmDetailsResponseModel;
         }
     }
 }

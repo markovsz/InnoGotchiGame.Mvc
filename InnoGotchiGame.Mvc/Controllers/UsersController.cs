@@ -18,8 +18,8 @@ namespace InnoGotchiGame.Mvc.Controllers
         public async Task<IActionResult> MyProfile()
         {
             var jwtToken = Request.Cookies["jwtToken"];
-            var userInfo = await _usersService.GetMyProfile(jwtToken);
-            ViewBag.UserInfo = userInfo;
+            var myProfileDetailsResponseModel = await _usersService.GetMyProfile(jwtToken);
+            ViewBag.UserInfo = myProfileDetailsResponseModel.ProfileDetails;
             return View("~/Views/AccountDetails.cshtml");
         }
     }

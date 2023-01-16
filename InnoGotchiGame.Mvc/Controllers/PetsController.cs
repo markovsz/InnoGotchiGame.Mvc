@@ -23,8 +23,8 @@ namespace InnoGotchiGame.Mvc.Controllers
         {
             var jwtToken = Request.Cookies["jwtToken"];
 
-            var pet = await _petsService.GetPetOverview(petId, jwtToken);
-            ViewBag.Pet = pet;
+            var petOverviewResponseModel = await _petsService.GetPetOverview(petId, jwtToken);
+            ViewBag.Pet = petOverviewResponseModel.Pet;
 
             var userIdStr = HttpContext.User.Claims
                                          .Where(e => e.Type.Equals(ClaimTypes.NameIdentifier))
@@ -43,14 +43,14 @@ namespace InnoGotchiGame.Mvc.Controllers
         {
             var jwtToken = Request.Cookies["jwtToken"];
 
-            (var pets, var prevPageParametersStr, var isPrevPageAvailable, var nextPageParametersStr, var isNextPageAvailable) = await _petsService.GetPetsOverview(parameters, jwtToken);
+            var paginationResponseModel = await _petsService.GetPetsOverview(parameters, jwtToken);
 
-            ViewBag.Pets = pets;
-            ViewBag.PrevPageParameters = prevPageParametersStr;
-            ViewBag.IsPrevPageAvailable = isPrevPageAvailable;
+            ViewBag.Pets = paginationResponseModel.Pets;
+            ViewBag.PrevPageParameters = paginationResponseModel.PrevPageParametersStr;
+            ViewBag.IsPrevPageAvailable = paginationResponseModel.IsPrevPageAvailable;
             ViewBag.CurrentPage = parameters.PageNumber;
-            ViewBag.NextPageParameters = nextPageParametersStr;
-            ViewBag.IsNextPageAvailable = isNextPageAvailable;
+            ViewBag.NextPageParameters = paginationResponseModel.NextPageParametersStr;
+            ViewBag.IsNextPageAvailable = paginationResponseModel.IsNextPageAvailable;
 
             return View("~/Views/AllInnogotchiList.cshtml");
         }

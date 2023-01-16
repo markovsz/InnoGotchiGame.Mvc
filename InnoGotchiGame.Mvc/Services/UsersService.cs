@@ -1,4 +1,5 @@
 ﻿using InnoGotchiGame.Mvc.Models.Reading;
+using InnoGotchiGame.Mvc.Models.ViewModels;
 using InnoGotchiGame.Mvc.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Net.Http.Headers;
@@ -19,8 +20,10 @@ namespace InnoGotchiGame.Mvc.Services
             _configuration = configuration;
         }
 
-        public async Task<UserReadingDto> GetMyProfile(string jwtToken)
+        public async Task<MyProfileDetailsResponseModel> GetMyProfile(string jwtToken)
         {
+            var myProfileDetailsResponseModel = new MyProfileDetailsResponseModel();
+
             var rootAddress = _configuration.GetSection("BackendRootAddress").Value;
             var userInfoRequestMessage = new HttpRequestMessage(
             HttpMethod.Get,
@@ -38,9 +41,9 @@ namespace InnoGotchiGame.Mvc.Services
             var httpClient = _httpClientFactory.CreateClient(httpClientName);
             var userInfoResponseMessage = await httpClient.SendAsync(userInfoRequestMessage);
             var userInfoJson = await userInfoResponseMessage.Content.ReadAsStringAsync();
-            var userInfo = JsonConvert.DeserializeObject<UserReadingDto>(userInfoJson);
+            myProfileDetailsResponseModel.ProfileDetails = JsonConvert.DeserializeObject<UserReadingDto>(userInfoJson);
 
-            return userInfo;
+            return myProfileDetailsResponseModel;
         }
     }
 }

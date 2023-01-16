@@ -22,10 +22,10 @@ namespace InnoGotchiGame.Mvc.Controllers
         {
             var jwtToken = Request.Cookies["jwtToken"];
 
-            (var myFarm, var friendFarms) = await _farmsService.GetFarmsOverview(jwtToken);
+            var farmsOverviewResponseModel = await _farmsService.GetFarmsOverview(jwtToken);
 
-            ViewBag.MyFarm = myFarm;
-            ViewBag.FriendFarms = friendFarms;
+            ViewBag.MyFarm = farmsOverviewResponseModel.MyFarm;
+            ViewBag.FriendFarms = farmsOverviewResponseModel.FriendFarms;
 
             return View("~/Views/FarmsOverview.cshtml");
         }
@@ -37,13 +37,13 @@ namespace InnoGotchiGame.Mvc.Controllers
         {
             var jwtToken = Request.Cookies["jwtToken"];
 
-            (var farm, var bodyPics, var eyesPics, var mouthPics, var nosePics) = await _farmsService.GetFarmDetails(farmId, jwtToken);
+            var farmDetailsResponseModel = await _farmsService.GetFarmDetails(farmId, jwtToken);
 
-            ViewBag.Farm = farm;
-            ViewBag.BodyPics = bodyPics;
-            ViewBag.EyesPics = eyesPics;
-            ViewBag.MouthPics = mouthPics;
-            ViewBag.NosePics = nosePics;
+            ViewBag.Farm = farmDetailsResponseModel.Farm;
+            ViewBag.BodyPics = farmDetailsResponseModel.BodyPics;
+            ViewBag.EyesPics = farmDetailsResponseModel.EyesPics;
+            ViewBag.MouthPics = farmDetailsResponseModel.MouthPics;
+            ViewBag.NosePics = farmDetailsResponseModel.NosePics;
             
             var userIdStr = HttpContext.User.Claims
                                          .Where(e => e.Type.Equals(ClaimTypes.NameIdentifier))

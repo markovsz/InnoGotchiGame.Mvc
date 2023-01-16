@@ -1,5 +1,6 @@
 ﻿using InnoGotchiGame.Mvc.Models.Reading;
 using InnoGotchiGame.Mvc.Models.RequestParameters;
+using InnoGotchiGame.Mvc.Models.ViewModels;
 using InnoGotchiGame.Mvc.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Net.Http.Headers;
@@ -24,8 +25,10 @@ namespace InnoGotchiGame.Mvc.Services
             _configuration = configuration;
         }
 
-        public async Task<PetReadingDto> GetPetOverview(Guid petId, string jwtToken)
+        public async Task<PetOverviewResponseModel> GetPetOverview(Guid petId, string jwtToken)
         {
+            var petOverviewResponseModel = new PetOverviewResponseModel();
+
             var petsRequestMessage = new HttpRequestMessage(
             HttpMethod.Get,
             $"api/Pets/pet/{petId}")
@@ -41,14 +44,13 @@ namespace InnoGotchiGame.Mvc.Services
             var httpClient = _httpClientFactory.CreateClient(httpClientName);
             var petsResponseMessage = await httpClient.SendAsync(petsRequestMessage);
             var petsJson = await petsResponseMessage.Content.ReadAsStringAsync();
-            var pet = JsonConvert.DeserializeObject<PetReadingDto>(petsJson);
-            return pet;
+            petOverviewResponseModel.Pet = JsonConvert.DeserializeObject<PetReadingDto>(petsJson);
+            return petOverviewResponseModel;
         }
 
-        public async Task<(IEnumerable<PetMinReadingDto>, string, bool, string, bool)> GetPetsOverview(PetParameters parameters, string jwtToken)
+        public async Task<PaginationResponseModel<PetMinReadingDto>> GetPetsOverview(PetParameters parameters, string jwtToken)
         {
-            string prevPageParametersStr = "";
-            string nextPageParametersStr = "";
+            var paginationResponseModel = new PaginationResponseModel<PetMinReadingDto>();
             var parametersStr = BuildRequestParametersString(parameters);
 
             var petsRequestMessage = new HttpRequestMessage(
@@ -66,31 +68,31 @@ namespace InnoGotchiGame.Mvc.Services
             var httpClient = _httpClientFactory.CreateClient(httpClientName);
             var petsResponseMessage = await httpClient.SendAsync(petsRequestMessage);
             var petsJson = await petsResponseMessage.Content.ReadAsStringAsync();
-            var pets = JsonConvert.DeserializeObject<IEnumerable<PetMinReadingDto>>(petsJson);
+            paginationResponseModel.Pets = JsonConvert.DeserializeObject<IEnumerable<PetMinReadingDto>>(petsJson);
 
             var paginationHeaderValues = petsResponseMessage.Headers.GetValues("X-Pagination-Page-Count");
             var pagesCount = Int32.Parse(paginationHeaderValues.FirstOrDefault());
 
-            bool isPrevPageAvailable = true;
+            paginationResponseModel.IsPrevPageAvailable = true;
             if (parameters.PageNumber > 1)
             {
                 var prevParameters = (PetParameters) parameters.Clone();
                 --prevParameters.PageNumber;
-                prevPageParametersStr = BuildRequestParametersString(prevParameters);
+                paginationResponseModel.PrevPageParametersStr = BuildRequestParametersString(prevParameters);
             }
-            else isPrevPageAvailable = false;
+            else paginationResponseModel.IsPrevPageAvailable = false;
 
-            bool isNextPageAvailable = true;
+            paginationResponseModel.IsNextPageAvailable = true;
             if (parameters.PageNumber < pagesCount)
             {
                 var nextParameters = (PetParameters) parameters.Clone();
                 ++nextParameters.PageNumber;
-                nextPageParametersStr = BuildRequestParametersString(nextParameters);
+                paginationResponseModel.NextPageParametersStr = BuildRequestParametersString(nextParameters);
             }
-            else isNextPageAvailable = false;
-            
+            else paginationResponseModel.IsNextPageAvailable = false;
 
-            return (pets, prevPageParametersStr, isPrevPageAvailable, nextPageParametersStr, isNextPageAvailable);
+
+            return paginationResponseModel;
         }
 
         private string BuildRequestParametersString(PetParameters parameters)
