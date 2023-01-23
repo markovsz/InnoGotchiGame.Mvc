@@ -1,0 +1,68 @@
+﻿<script src="~/js/account.js"></script>
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                <img class="rounded-circle mt-0" width="150px" src="https://localhost:44336/images/@ViewBag.UserInfo.PictureSrc">
+                <div class="">
+                    <input class="m-2" name="myFile" id="avatar-choosing-button" type="file">
+                    <button class="btn btn-secondary" id="avatar-upload-button">Upload</button>
+                </div>
+                <button class="btn btn-secondary m-2" data-bs-toggle="modal" data-bs-target="#password-modal">Change password</button>
+            </div>
+        </div>
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Profile Settings</h4>
+                </div>
+                <div class="col-md-8">
+                    <label class="labels">Id</label>
+                    <input type="text" class="form-control col-6" id="acc-user-id" disabled placeholder="Id" value="@ViewBag.UserInfo.UserId">
+                </div>
+                <div class="col-md-6">
+                    <label class="labels">Email</label>
+                    <input type="text" class="form-control" id="acc-email" disabled placeholder="email" value="@ViewBag.UserInfo.Email">
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                        <label class="labels">Name</label>
+                        <input type="text" class="form-control readonly" id="acc-name" placeholder="first name" value="@ViewBag.UserInfo.FirstName">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="labels">Surname</label>
+                        <input type="text" class="form-control readonly" id="acc-surname" placeholder="surname" value="@ViewBag.UserInfo.LastName">
+                    </div>
+                </div>
+                <div class="mt-5 text-center"><button class="btn btn-primary enabled" id="save-profile-button" type="button">Save Profile</button></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="password-modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Change password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label class="col-form-label">Old password:</label>
+                        <input type="text" class="form-control" id="old-password">
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label">New password:</label>
+                        <input type="text" class="form-control" id="new-password">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="password-changing-modal-close-button">Close</button>
+                <button type="button" class="btn btn-primary" id="password-changing-button">Change</button>
+            </div>
+        </div>
+    </div>
+</div>

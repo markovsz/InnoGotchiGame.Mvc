@@ -1,0 +1,11 @@
+﻿.pet-pic-container{
+    position: relative;
+}
+
+.body-part-img {
+    position: absolute;
+    width: 134px;
+    height: 134px;
+    top: 0px;
+    left: 0px;
+}

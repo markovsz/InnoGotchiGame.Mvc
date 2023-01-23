@@ -1,0 +1,8 @@
+﻿@{
+    Layout = "~/Views/Shared/_UnauthorizedLayout.cshtml";
+    var exception = ViewData["Exception"] as Exception;
+}
+
+<div>
+    <h2>Error: @exception.Message</h2>
+</div>

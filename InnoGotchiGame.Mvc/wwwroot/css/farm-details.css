@@ -1,0 +1,22 @@
+﻿.img-absolute {
+    position: absolute;
+}
+
+.draggable-pic {
+    width: 150px;
+    height: 150px;
+    padding: 0.5em;
+}
+
+.img-choosable {
+    width: 100px;
+    height: 100px;
+}
+
+.pet-creating-modal{
+    height: 900px;
+}
+
+.pet-pic-container{
+    position: relative;
+}

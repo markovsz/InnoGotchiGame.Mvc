@@ -1,0 +1,67 @@
+﻿<script src="~/js/innogotchi-details.js"></script>
+<link rel="stylesheet" href="~/css/innogotchi-details.css">
+<div class="container">
+    <div class="row">
+        <div class="col-4 container farms-overview-content">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Name: @ViewBag.Pet.Name</h5>
+                    <p class="card-text">Age: @ViewBag.Pet.Age</p>
+                    <p class="card-text">Hunger level: @ViewBag.Pet.HungerLevel</p>
+                    <p class="card-text">Thirst level: @ViewBag.Pet.ThirstLevel</p>
+                    <p class="card-text">Happiness days count: @ViewBag.Pet.HappinessDaysCount</p>
+                    <p class="card-text">Is alive: @ViewBag.Pet.IsAlive</p>
+                </div>
+                @foreach (var friendId in @ViewBag.Pet.Friends)
+                {
+                    @if (friendId == @ViewBag.CurrentUserId || @ViewBag.Pet.UserId == @ViewBag.CurrentUserId)
+                    {
+                        <button class="btn btn-primary feeding-button m-1" data-pet-id="@ViewBag.Pet.Id">Feed</button>
+                        <button class="btn btn-primary give-a-drink-button mx-1 mb-1" data-pet-id="@ViewBag.Pet.Id">Give a drink</button>
+                        break;
+                    }
+                }
+            </div>
+        </div>
+        <div class="col-8 pet-pic-container">
+            <img src="https://localhost:44336/images/body-parts/@ViewBag.Pet.BodyPicName" class="body-part-img" id="body-pic" />
+            <img src="https://localhost:44336/images/body-parts/@ViewBag.Pet.EyesPicName" class="body-part-img" id="eyes-pic" />
+            <img src="https://localhost:44336/images/body-parts/@ViewBag.Pet.MouthPicName" class="body-part-img" id="mouth-pic" />
+            <img src="https://localhost:44336/images/body-parts/@ViewBag.Pet.NosePicName" class="body-part-img" id="nose-pic" />
+        </div>
+        <script>
+            $(document).ready(function () {
+                let bodyPic = $('#body-pic');
+                let eyesPic = $('#eyes-pic');
+                let mouthPic = $('#mouth-pic');
+                let nosePic = $('#nose-pic');
+
+                bodyPic.css('left', toFloatDotFormat('@ViewBag.Pet.BodyPictureX'));
+                bodyPic.css('top', toFloatDotFormat('@ViewBag.Pet.BodyPictureY'));
+                eyesPic.css('left', toFloatDotFormat('@ViewBag.Pet.EyesPictureX'));
+                eyesPic.css('top', toFloatDotFormat('@ViewBag.Pet.EyesPictureY'));
+                mouthPic.css('left', toFloatDotFormat('@ViewBag.Pet.MouthPictureX'));
+                mouthPic.css('top', toFloatDotFormat('@ViewBag.Pet.MouthPictureY'));
+                nosePic.css('left', toFloatDotFormat('@ViewBag.Pet.NosePictureX'));
+                nosePic.css('top', toFloatDotFormat('@ViewBag.Pet.NosePictureY'));
+
+                function toFloatDotFormat(num) {
+                    return parseFloat(num.replace(',', '.').replace(' ', ''))
+                }
+
+                console.log(bodyPic.width() + ' ' + bodyPic.height());
+                bodyPic.width(bodyPic.width() * toFloatDotFormat('@ViewBag.Pet.BodyPictureScale'));
+                bodyPic.height(bodyPic.height() * toFloatDotFormat('@ViewBag.Pet.BodyPictureScale'));
+                console.log(eyesPic.width() + ' ' + eyesPic.height());
+                eyesPic.width(eyesPic.width() * toFloatDotFormat('@ViewBag.Pet.EyesPictureScale'));
+                eyesPic.height(eyesPic.height() * toFloatDotFormat('@ViewBag.Pet.EyesPictureScale'));
+                console.log(mouthPic.width() + ' ' + mouthPic.height());
+                mouthPic.width(mouthPic.width() * toFloatDotFormat('@ViewBag.Pet.MouthPictureScale'));
+                mouthPic.height(mouthPic.height() * toFloatDotFormat('@ViewBag.Pet.MouthPictureScale'));
+                console.log(nosePic.width() + ' ' + nosePic.height());
+                nosePic.width(nosePic.width() * toFloatDotFormat('@ViewBag.Pet.NosePictureScale'));
+                nosePic.height(nosePic.height() * toFloatDotFormat('@ViewBag.Pet.NosePictureScale'));
+            });
+        </script>
+    </div>
+</div>
